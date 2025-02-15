@@ -36,7 +36,7 @@ function Footer() {
                     <p>Vadodara</p>
                     <p>Surat</p>
                 </div>
-                <div className="col">
+                <div className="col  d-lg-block d-sm-block d-md-block d-none">
                     <h1 className='fs-5 mb-4'>Life at Mom's magic</h1>
                     <p>Explore with Mom's magic</p>
                     <p>Mom's magic News</p>

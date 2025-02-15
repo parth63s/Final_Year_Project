@@ -43,3 +43,29 @@
   cursor: pointer;
   --bs-gutter-x: 0 !important;
 }
+
+.footer .row {
+  --bs-gutter-x: 0 !important;
+}
+
+/* show page img */
+
+.show-page-img {
+  width: 50% !important;
+  padding: 0.3rem;
+  border-radius: 1rem !important;
+}
+
+.review-food {
+  padding-left: 0.5rem !important;
+}
+
+.location {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.text-height {
+  line-height: 1rem !important;
+}
