@@ -2,6 +2,7 @@ import React from 'react';
 import { MdLocationPin } from "react-icons/md";
 import {Tooltip ,tooltipClasses, styled} from "@mui/material";
 import { IoLocationOutline } from "react-icons/io5";
+import Review from './Review';
 
 const LightTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -27,6 +28,10 @@ function ShowFood() {
                             <a className="fs-6 location"><IoLocationOutline /> Gotri Road, Vadodara</a>
                         </LightTooltip>
                         <span className='fs-6'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9 Years in Business</span>
+                        <div className="d-grid gap-2 d-md-block mt-2">
+                            <a className="btn " type="button" href='foodshow/weekly'>Weekly</a>
+                            <a className="btn " type="button" href='/monthly'>Monthly</a>
+                        </div>
                     </div>
                     <div className="col mb-4 order-md-1 order-lg-2 order-1">
                         <div className='row'>
@@ -38,6 +43,8 @@ function ShowFood() {
                             <img src="./media/images/Food4.jpg" className="card-img-top show-page-img col" alt="..."/>
                         </div>
                     </div>
+
+                    <Review/>
                 </div>
             </div>
         </>

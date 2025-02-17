@@ -5,7 +5,7 @@ function NavBar() {
         <nav className="navbar bg-body-tertiary fixed-top" style={{backgroundColor:"black"}}>
             <div className="container-fluid">
                 <a className="navbar-brand" href="/">
-                    <img src="./media/images/logo3.svg" alt="Bootstrap" width="100" height="55"/>
+                    <img src="./media/images/logo.svg" alt="Bootstrap" width="100" height="55"/>
                     {/* <b>MOM'S Magic</b> */}
                 </a>
                 {/* <form className="d-flex mt-3" role="search">
@@ -15,7 +15,7 @@ function NavBar() {
                 <button className="navbar-toggler color" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div className="offcanvas offcanvas-end side-bar w-25" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div className="offcanvas-header">
                         <h5 className="offcanvas-title" id="offcanvasNavbarLabel">MOM's Magic</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
