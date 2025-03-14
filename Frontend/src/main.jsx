@@ -10,6 +10,8 @@ import FoodPage from './component/FoodPage/FoodPage.jsx';
 import Menu from './component/FoodPage/Menu.jsx';
 import Review from './component/FoodPage/Review.jsx';
 import ReviewPage from './component/FoodPage/ReviewPage.jsx';
+import MainHomePage from './component/landing_page/MainHomePage.jsx';
+import FormPage from './component/FoodPage/FromPage.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -17,10 +19,13 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter> 
       
         <Routes>
-          <Route path="/" element={<HomePage/>}></Route>
+          
+          <Route path="/user" element={<HomePage/>}></Route>
+          <Route path="/" element={<MainHomePage/>}></Route>
           <Route path="/foodshow" element={<FoodPage/>}></Route>
           <Route path="/foodshow/weekly" element={<Menu/>}></Route>
           <Route path="/review" element={<ReviewPage/>}></Route>
+          <Route path="/subscribe" element={<FormPage/>}></Route>
         </Routes>
       
     </BrowserRouter>

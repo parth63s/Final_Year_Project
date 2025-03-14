@@ -133,3 +133,131 @@
   margin-top: 8% !important;
 }
 
+
+
+.shape {
+  width: 300px; /* Adjust size as needed */
+  height: 300px;
+  background-image: url("./media/images/mainImage.jpg");
+  clip-path: path("M 150 0 C 230 0, 300 90, 300 150 C 300 230, 230 300, 150 300 C 90 300, 0 230, 0 150 C 0 90, 90 0, 150 0 Z");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
+/* main page css */
+.mainPage {
+  background-color: rgb(255, 255, 255) !important;
+  margin: 0 2rem 0 1rem;
+}
+
+.navbar-brand {
+  color: red;
+}
+
+
+
+.link {
+  text-decoration: none ;
+  color: black;
+  margin-right: 2rem;
+}
+
+.image {
+  margin-left: 3rem;
+}
+
+.get-start {
+  background-color: rgb(217, 153, 35);
+  color: white;
+  
+}
+
+
+.about-img {
+    height: 100%;
+    width: 90%;
+}
+
+.line {
+  border-bottom:3px solid orange;
+  width: 4rem;
+}
+
+.m-t-container {
+  margin-top: 4rem !important
+}
+
+.text-shadow {
+  text-shadow: 1.5px 1.5px rgb(220, 214, 214);
+}
+
+.background-image {
+  background-image: url("./media/images/backgroundMenu.jpg");
+  padding: 2rem;
+  border-radius: 1rem ;
+  box-shadow: 1.5px 1.5px rgb(164, 147, 147, 0.5);
+}
+
+
+/* Ensure the food card has proper styling */
+.food-card {
+  display: block;
+  background-color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border: 1px solid #e0e0e0;
+}
+
+.food-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for images */
+.food-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Style for card body */
+.card-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* Add responsiveness */
+@media (max-width: 768px) {
+  .food-img {
+    height: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .food-img {
+    height: 160px;
+  }
+}

@@ -1,9 +1,9 @@
 import React from 'react';
 
 
-function Footer() {
+function Footer(value) {
     return ( 
-        <div className='footer pt-4'>
+        <div className='footer pt-4' id='item-4'>
             {/* <h1 className='fs-4 mb-4 mt-3 text-center'>MOM'S Magic</h1> */}
         
             <div className="row">
