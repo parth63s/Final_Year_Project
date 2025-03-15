@@ -12,20 +12,24 @@ import Review from './component/FoodPage/Review.jsx';
 import ReviewPage from './component/FoodPage/ReviewPage.jsx';
 import MainHomePage from './component/landing_page/MainHomePage.jsx';
 import FormPage from './component/FoodPage/FromPage.jsx';
+import Login from './component/auth/Login.jsx';
+import Register from './component/auth/Register.jsx';
 
 
 createRoot(document.getElementById('root')).render(
   
     <BrowserRouter> 
-      
+        
         <Routes>
           
-          <Route path="/user" element={<HomePage/>}></Route>
+          <Route path="/customer" element={<HomePage/>}></Route>
           <Route path="/" element={<MainHomePage/>}></Route>
           <Route path="/foodshow" element={<FoodPage/>}></Route>
           <Route path="/foodshow/weekly" element={<Menu/>}></Route>
           <Route path="/review" element={<ReviewPage/>}></Route>
           <Route path="/subscribe" element={<FormPage/>}></Route>
+          <Route path="/login" element={<Login/>}></Route>
+          <Route path="/register" element={<Register/>}></Route>
         </Routes>
       
     </BrowserRouter>
