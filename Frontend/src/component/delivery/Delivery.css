@@ -1,0 +1,36 @@
+.delivery-background {
+    background-color: rgb(244, 237, 237) !important;
+}
+
+.delivery-container {
+    margin-top: 5rem !important;
+}
+
+.delivery-margin {
+    margin-top: 2rem !important;
+}
+
+.active {
+    border: none !important;
+    background-color: rgb(244, 237, 237) !important;
+    color: red !important;
+    border-bottom: 2px solid red !important;
+    
+}
+
+.not-active {
+    color: black;
+    opacity: 0.5;
+}
+
+small {
+    opacity: 0.6;
+}
+
+.delivery-color {
+    background-color: rgb(240, 29, 29) !important;
+}
+
+.delivery-NavBar {
+    color: white;
+}

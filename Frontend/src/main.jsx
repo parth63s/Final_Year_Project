@@ -14,6 +14,7 @@ import MainHomePage from './component/landing_page/MainHomePage.jsx';
 import FormPage from './component/FoodPage/FromPage.jsx';
 import Login from './component/auth/Login.jsx';
 import Register from './component/auth/Register.jsx';
+import DeliveryDashboard from './component/delivery/DeliveryPage.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/subscribe" element={<FormPage/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/register" element={<Register/>}></Route>
+          <Route path="/delivery" element={<DeliveryDashboard/>}></Route>
         </Routes>
       
     </BrowserRouter>
