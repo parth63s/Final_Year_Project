@@ -1,0 +1,250 @@
+.dashboard-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .dashboard-header {
+    background-color: white;
+    padding: 1.5rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .dashboard-main {
+    padding-bottom: 2rem;
+  }
+  
+  .dashboard-section {
+    margin-bottom: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Rating Card Styles */
+  .rating-card {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+  }
+  
+  .rating-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .rating-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 1rem 0;
+  }
+  
+  .rating-count {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  /* Review Item Styles */
+  .review-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .review-item:last-child {
+    border-bottom: none;
+  }
+  
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .review-rating {
+    display: flex;
+    gap: 2px;
+  }
+  
+  .review-comment {
+    margin: 0.5rem 0;
+    color: #666;
+  }
+  
+  /* Subscription Card Styles */
+  .subscription-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .subscription-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .subscription-count {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4a90e2;
+    margin: 1rem 0;
+  }
+  
+  .subscription-price {
+    font-size: 1.25rem;
+    color: #666;
+  }
+  
+  /* Menu Table Styles */
+  .tables {
+    margin-bottom: 0;
+  }
+  
+  .tables th {
+    font-weight: 600;
+    color: #333;
+    border-top: none;
+  }
+  
+  .tables td {
+    vertical-align: middle;
+  }
+  
+  /* Pricing Card Styles */
+  .pricing-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+  }
+  
+  .pricing-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .pricing-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4a90e2;
+    margin: 1rem 0;
+  }
+  
+  .pricing-duration {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  
+  .pricing-features li {
+    padding: 0.5rem 0;
+    color: #666;
+    display: flex;
+    align-items: center;
+  }
+  
+  .pricing-features li:before {
+    content: "✓";
+    color: #4a90e2;
+    margin-right: 0.5rem;
+  }
+  
+  .pricing-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Button Styles */
+  .btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  
+  .btn-primary:hover {
+    background-color: #357abd;
+    border-color: #357abd;
+  }
+  
+  .btn-outline-primary {
+    color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  
+  .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .dashboard-title {
+      font-size: 1.5rem;
+    }
+  
+    .section-title {
+      font-size: 1.25rem;
+    }
+  
+    .rating-value,
+    .subscription-count,
+    .pricing-amount {
+      font-size: 2rem;
+    }
+  
+    .pricing-card {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .dashboard-header {
+      padding: 1rem 0;
+    }
+  
+    .dashboard-title {
+      font-size: 1.25rem;
+    }
+  
+    .rating-value,
+    .subscription-count,
+    .pricing-amount {
+      font-size: 1.75rem;
+    }
+  
+    .table-responsive {
+      margin: 0 -1rem;
+    }
+  } 

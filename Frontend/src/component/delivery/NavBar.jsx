@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import { useContext } from 'react';
+import { OnlineStatusContext } from './OnlineStatusContext';
 
 function NavBar() {
+    const { isOnline, toggleOnline } = useContext(OnlineStatusContext);
+
     return ( 
         <nav className="navbar bg-body-tertiary delivery-color fixed-top" style={{backgroundColor:"black"}}>
             <div className="container-fluid">
@@ -12,10 +16,18 @@ function NavBar() {
                     
                     {/* <img src="./media/images/logo.svg" alt="Bootstrap" width="100" height="55"/> */}
                 </a>
-                
-                <button className="navbar-toggler color" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+                <div>
+
+                    <button
+                        className={`btn ${isOnline ? "btn-success" : "btn-danger"} me-2 shadow px-4`}
+                        onClick={toggleOnline}
+                        >
+                        {isOnline ? "Online" : "Offline"}
+                    </button>
+                    <button className="navbar-toggler color " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon "></span>
+                    </button>
+                </div>
                 <div className="offcanvas offcanvas-end side-bar w-25" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div className="offcanvas-header">
                         <h5 className="offcanvas-title" id="offcanvasNavbarLabel">MOM's Magic</h5>

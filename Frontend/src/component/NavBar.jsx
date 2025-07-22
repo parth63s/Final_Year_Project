@@ -1,8 +1,36 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { showToast } from '../utils/showToast'
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+
 
 
 function NavBar() {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await axios.get('http://localhost:5000/api/auth/logout', {
+                withCredentials: true,
+            });
+
+        // Clear localStorage or any user data
+            localStorage.removeItem('user');
+
+
+        // Redirect to home page
+            navigate('/', { state: { toast: "Logged out successfully!" } });
+        } catch (err) {
+            toast.error('Logout failed. Try again.', {
+                position: 'top-center',
+            });
+            // navigate('/')
+            console.error(err);
+        }
+    };
     return ( 
         <nav className="navbar bg-body-tertiary fixed-top" style={{backgroundColor:"black"}}>
             <div className="container-fluid">
@@ -34,7 +62,7 @@ function NavBar() {
                                 <Link className="nav-link" to="/menu">Services</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/login">Login</Link>
+                                <Link className="nav-link"  onClick={handleLogout}>LogOut</Link>
                             </li>
                         </ul>
                     </div>

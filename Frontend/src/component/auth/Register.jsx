@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'; // Make sure axios is imported
 import './Register.css';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -23,36 +23,39 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // if (formData.password !== formData.confirmPassword) {
-    //   toast.error('Passwords do not match!');
-    //   return;
-    // }
 
-    // Here you would typically make an API call to register
-    localStorage.setItem('user', JSON.stringify({
-      name: formData.name,
-      email: formData.email,
-      role: formData.role,
-    }));
-    
-    // toast.success('Registration successful!');
-    
-    // Redirect based on role
-    switch (formData.role) {
-      case 'customer':
-        navigate('/customer');
-        break;
-      case 'delivery':
-        navigate('/delivery');
-        break;
-      case 'service':
-        navigate('/service');
-        break;
-      default:
-        navigate('/');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/register', formData, {
+        withCredentials: true,
+      });
+
+      const role = res.data.role;
+
+      // Navigate based on role
+      switch (role) {
+        case 'customer':
+          navigate('/customer', { state: { toast: "Welcome to Mom's Magic" } });
+          break;
+        case 'delivery':
+          navigate('/delivery', { state: { toast: "Welcome to Delivery Mom's Magic" } });
+          break;
+        case 'service':
+          navigate('/service', { state:{toast: "Welcome to Service Provider Mom's Magic"} });
+          break;
+        default:
+          navigate('/');
+      }
+    } catch (err) {
+      alert(err.response?.data?.msg || 'Registration failed');
     }
   };
 
@@ -63,7 +66,7 @@ const Register = () => {
           <div className="col-md-8 col-lg-6">
             <div className="register-box">
               <h2 className="text-center mb-4">Create Account</h2>
-              
+
               <form onSubmit={handleSubmit}>
                 <div className="row g-3">
                   <div className="col-12">
@@ -175,6 +178,7 @@ const Register = () => {
                   </div>
                 </div>
               </form>
+
             </div>
           </div>
         </div>

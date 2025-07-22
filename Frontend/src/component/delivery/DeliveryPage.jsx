@@ -5,16 +5,30 @@ import Body from './Body';
 import "./Delivery.css";
 import DeliveryItem from './DeliveryItem';
 import Item from './Item';
+import { OnlineStatusProvider } from "./OnlineStatusContext";
+import { showToast } from '../../utils/showToast'
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 function DeliveryPage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.toast) {
+      showToast(location.state.toast, "success");
+    }
+  }, [location.state]);
+
   return ( 
     <div className='delivery-background'>
-      <NavBar/>
-      <Body/>
-      <DeliveryItem/>
-      <Item/>
-      <Footer/>
+      <OnlineStatusProvider>
+        <NavBar/>
+        <Body/>
+        <DeliveryItem/>
+        <Item/>
+        <Footer/>
+      </OnlineStatusProvider>
     </div>
    );
 }

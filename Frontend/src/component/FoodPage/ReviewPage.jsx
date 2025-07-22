@@ -4,6 +4,11 @@ import Footer from '../Footer';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios'; 
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+
 
 const ReviewsList = [
     { rating: 1, Question: "What went wrong?", ListOfQuery: ["Missing food items", "Slow service", "Small portions", "Expensive", "Stale food", "Inferior quality"] },
@@ -31,6 +36,23 @@ function ReviewPage() {
     const [value, setValue] = useState(1);
     const [hover, setHover] = useState(-1);
     const [selectedQueries, setSelectedQueries] = useState([]);
+    const navigate = useNavigate();
+    const { id } = useParams(); 
+    const [foodInfo, setFoodInfo] = useState(null);
+    const [imageUrl, setImageUrl] = useState("");
+
+
+    useEffect(() => {
+        const fetchFoodDetails = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/foods/${id}`);
+                setFoodInfo(res.data);
+            } catch (error) {
+                console.error("Error fetching food info:", error);
+            }
+        };
+        fetchFoodDetails();
+    }, [id]);
 
     const uploadFile = () => {
         fileInputRef.current.click();
@@ -44,6 +66,32 @@ function ReviewPage() {
 
     const reviewIndex = value - 1 >= 0 && value - 1 < ReviewsList.length ? value - 1 : 0;
 
+    const handleSubmit = async () => {
+        
+        try {
+            await axios.post(`http://localhost:5000/api/reviews/${id}`, {
+                rating: value,
+                feedback: document.querySelector(".review-text-box").value,
+                tags: selectedQueries,
+                imageUrl: imageUrl, // Add real upload logic later
+            },  {withCredentials: true});
+
+            navigate("/customer", { state: { toast: "Review submitted!" } });
+        } catch (err) {
+            toast.error("Failed to submit review. Please try again.");
+        }
+    };
+
+    const handleImageChange = (file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImageUrl(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <>
             <NavBar />
@@ -53,10 +101,14 @@ function ReviewPage() {
                 <div className="row p-4">
                     <div className="col border-50 bottom-remove p-lg-4 p-sm-4 p-md-4 rounded-left">
                         <div className='row mb-3'>
-                            <img className='col-3 p-2 rounded' src="/media/images/Food1.jpg" alt="Food" />
+                            <img
+                                    className='col-3 p-2 rounded'
+                                    src={foodInfo?.imageUrls?.[0] || "/media/images/default.jpg"}
+                                    alt={foodInfo?.name || "Food"}
+                                />
                             <div className='col p-2'>
-                                <h1 className='fs-5'>Title</h1>
-                                <p>Location</p>
+                                <h1 className='fs-5'>{foodInfo?.name || 'Title'}</h1>
+                                <p>{foodInfo?.location || 'Location'}</p>
                             </div>
                         </div>
                         <h1 className='fs-5 mb-3'>How would you rate your experience?</h1>
@@ -90,9 +142,15 @@ function ReviewPage() {
                         <p className='fs-4'>Tell us about your experience</p>
                         <textarea className='p-2 mt-2 review-text-box' placeholder="Write your review..." />
                         <p className='fs-4 mt-4'>Upload Photos</p>
-                        <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
+                        <input type="file" ref={fileInputRef}  accept='image/*' style={{ display: 'none' }} onChange={(e) => handleImageChange(e.target.files[0])} required/>
+                        {imageUrl && (
+                            <img
+                            src={imageUrl}
+                            style={{ marginTop: "5px", width: "25%", objectFit: "cover" }}
+                            />
+                        )}
                         <div className='upload-image mt-4' onClick={uploadFile}></div>
-                        <p className='btn btn-primary px-4 fs-5 mt-5 mb-5'>Submit Review</p>
+                        <button className='btn btn-primary px-4 fs-5 mt-5 mb-5' onClick={handleSubmit}>Submit Review</button>
                     </div>
                 </div>
                 <hr />

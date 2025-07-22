@@ -10,15 +10,14 @@
     margin-top: 2rem !important;
 }
 
-.active {
+.actives {
     border: none !important;
     background-color: rgb(244, 237, 237) !important;
     color: red !important;
     border-bottom: 2px solid red !important;
-    
 }
 
-.not-active {
+.not-actives {
     color: black;
     opacity: 0.5;
 }
@@ -28,9 +27,30 @@ small {
 }
 
 .delivery-color {
-    background-color: rgb(240, 29, 29) !important;
+    background-color:#FF4B2B !important;
 }
 
 .delivery-NavBar {
     color: white;
+}
+
+.delivery-icon {
+    opacity: 0.7;
+}
+
+.delivery-margin-icon {
+    margin-bottom: 0;
+}
+
+.text {
+    line-height: 1.4rem;
+}
+
+.delivery-btn {
+    background-color: #FF4B2B;
+    padding: 0.7rem !important;
+}
+
+.delivery-btn:hover {
+    background-color: #c92f13;
 }

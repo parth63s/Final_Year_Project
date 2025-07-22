@@ -21,16 +21,16 @@ function Use() {
                     <div className='d-flex justify-content-center'>
                             <img className='' src="./media/images/Use_2.png" alt="" height="110" width="150"/>
                     </div>
-                    <h1 className='fs-6 text-center mt-2'>Choose Meal</h1>
-                    <p className='text-center opacity-50 p-2'>Easily find out the homemade food you are craving</p>
+                    <h1 className='fs-6 text-center mt-2'>Schedule Order</h1>
+                    <p className='text-center opacity-50 p-2'>we know, that you're a food lover. Strengthen your meal schedule</p>
                 </div>
                 <div className="col-1 d-flex justify-content-center align-items-center"><KeyboardArrowRightIcon /></div>
                 <div className="col-3">
                     <div className='d-flex justify-content-center'>
                             <img className='' src="./media/images/Use_3.png" alt="" height="110" width="150"/>
                     </div>
-                    <h1 className='fs-6 text-center mt-2'>Choose Meal</h1>
-                    <p className='text-center opacity-50 p-2'>Easily find out the homemade food you are craving</p>
+                    <h1 className='fs-6 text-center mt-2'>Track Order</h1>
+                    <p className='text-center opacity-50 p-2'>Now you can track your order Get ready.</p>
                 </div>
             </div>
         </div>

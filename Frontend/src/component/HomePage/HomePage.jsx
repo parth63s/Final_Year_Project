@@ -2,6 +2,9 @@ import React from 'react';
 import NavBar from '../NavBar';
 import FoodCard from './FoodCard';
 import Footer from '../Footer';
+import { showToast } from '../../utils/showToast'
+
+
 
 const foodItems = [
     { image: "./media/images/Food1.jpg", name: "Pizza", description: "Delicious cheesy pizza with toppings." },
@@ -10,7 +13,10 @@ const foodItems = [
     { image: "./media/images/Food4.jpg", name: "Sushi", description: "Fresh sushi rolls with salmon and avocado." },
   ];
   
-function HomePage() {
+function HomePage(PopUp) {
+    if (PopUp != undefined) {
+    showToast(PopUp);
+    }
     return (  
         <>
             <NavBar/>

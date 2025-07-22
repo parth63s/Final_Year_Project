@@ -10,7 +10,7 @@ const DeliveryItem = () => {
       <ul className="nav nav-tabs mb-3">
         {["Active Deliveries", "Route Overview", "Schedule"].map((label, index) => (
           <li className="nav-item" key={index}>
-            <button className={`nav-link ${selectedTab === index ? "active" : "not-active"}`} onClick={() => setSelectedTab(index)}>
+            <button className={`nav-link ${selectedTab === index ? "actives" : "not-actives"}`} onClick={() => setSelectedTab(index)}>
               <h6>{label}</h6>
             </button>
           </li>

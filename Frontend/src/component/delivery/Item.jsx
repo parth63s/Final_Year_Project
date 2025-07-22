@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import { OnlineStatusContext } from './OnlineStatusContext';
 
 const Item = () => {
-  const [isOnline, setIsOnline] = useState(true);
+  const { isOnline, toggleOnline } = useContext(OnlineStatusContext);
   const [plans, setPlans] = useState([
     {
       id: 1,
@@ -86,42 +87,67 @@ const Item = () => {
             <div className="row">
               {/* Customer Details */}
               <div className="col-md-4">
-                <h5>Customer Details</h5>
-                <p>
-                    <PersonIcon/>
-                    {plan.customer.name} <br />
-                    <small>Customer Name</small>
+                <h5 className="mb-3">Customer Details</h5>
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><PersonIcon /></p>
+                    <div className="m-2 text">
+                      {plan.customer.name} <br />
+                      <small>Customer Name</small>
+                    </div>
                 </p>
-                <p>
-                  <PhoneIcon /> {plan.customer.phone} <br />
-                  <small>Phone Number</small>
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><PhoneIcon /></p>
+                    <div className="m-2 text">
+                      {plan.customer.phone} <br />
+                      <small>Phone Name</small>
+                    </div>
                 </p>
-                <p>
-                  <EmailIcon /> {plan.customer.email} <br />
-                  <small>Email</small>
+                
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><EmailIcon /></p>
+                    <div className="m-2 text">
+                      {plan.customer.email} <br />
+                      <small>Email</small>
+                    </div>
                 </p>
-                <p>
-                  <LocationOnIcon /> {plan.customer.address} <br />
-                  <small>Delivery Address</small>
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><LocationOnIcon /></p>
+                    <div className="m-2 text">
+                      {plan.customer.address} <br />
+                      <small>Delivery Address</small>
+                    </div>
                 </p>
               </div>
 
               {/* Delivery Schedule */}
               <div className="col-md-4">
-                <h5>Delivery Schedule</h5>
-                <p>
-                  <LocationOnIcon /> {plan.pickup.restaurant} <br />
-                  <small>{plan.pickup.address}</small>
+                <h5 className="mb-3">Delivery Schedule</h5>
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><LocationOnIcon /></p>
+                    <div className="m-2 text">
+                      {plan.pickup.restaurant} <br />
+                      <small>{plan.pickup.address}</small>
+                    </div>
                 </p>
-                <p>
-                  <AccessTimeIcon /> Pickup: {plan.pickup.startTime} -{" "}
-                  {plan.pickup.endTime} <br />
-                  <small>Delivery: {plan.delivery.time}</small>
+
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><AccessTimeIcon /></p>
+                    <div className="m-2 text">
+                      Pickup: {plan.pickup.startTime} -{" "}
+                      {plan.pickup.endTime} <br />
+                      <small>Delivery: {plan.delivery.time}</small>
+                    </div>
                 </p>
-                <p>
-                  <DeliveryDiningIcon /> {plan.subscription.type} <br />
-                  <small>Days: {plan.subscription.days.join(", ")}</small>
+
+                
+                <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><DeliveryDiningIcon /></p>
+                    <div className="m-2 text">
+                      {plan.subscription.type} <br />
+                      <small>Days: {plan.subscription.days.join(", ")}</small>
+                    </div>
                 </p>
+                
               </div>
 
               {/* Map & Actions */}
@@ -136,9 +162,9 @@ const Item = () => {
                   loading="lazy"
                   title={`Map-${plan.id}`}
                 ></iframe>
-                <div className="mt-3 d-flex gap-2 justify-content-center">
+                <div className="row mt-3 p-3">
                   <button
-                    className="btn btn-primary"
+                    className={`btn  btn-primary delivery-btn ${!isOnline || plan.delivery.status === "completed" ? "btn-secondary" : ""} col m-1 shadow`}
                     disabled={!isOnline || plan.delivery.status === "completed"}
                     onClick={() => updateDeliveryStatus(plan.id)}
                   >
@@ -149,7 +175,7 @@ const Item = () => {
                       : "Delivered"}
                   </button>
                   <button
-                    className="btn btn-outline-danger"
+                    className="btn btn-outline-danger col m-1"
                     onClick={() => window.open(plan.mapUrl, "_blank")}
                   >
                     Open Map

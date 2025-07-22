@@ -2,7 +2,7 @@ import * as React from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const labels = {
   0.5: 'Useless',
@@ -30,7 +30,7 @@ export  function RatingStarReadOnly({rating}) {
       <Rating
         size='large'
         name="hover-feedback"
-        value={value}
+        value={rating}
         precision={1}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
@@ -56,6 +56,7 @@ export  function RatingStar() {
     const [value, setValue] = React.useState(0);
     const [hover, setHover] = React.useState(-1);
     const navigate = useNavigate();
+    const {id} = useParams();
   
     return (
       <Box sx={{ width: 200, display: 'flex', alignItems: 'center' }}>
@@ -67,7 +68,7 @@ export  function RatingStar() {
           getLabelText={getLabelText}
           onChange={(event, newValue) => {
             setValue(newValue);
-            navigate("/review", { state: {rating: newValue}});
+            navigate(`/review/${id}`, { state: {rating: newValue}});
           }}
           onChangeActive={(event, newHover) => {
             setHover(newHover);

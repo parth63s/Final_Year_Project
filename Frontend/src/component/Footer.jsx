@@ -1,62 +1,54 @@
 import React from 'react';
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Twitter, Facebook, LinkedIn, YouTube } from "@mui/icons-material";
+import "./footer.css";
 
 
 function Footer(value) {
     return ( 
-        <div className='footer pt-4' id='item-4'>
-            {/* <h1 className='fs-4 mb-4 mt-3 text-center'>MOM'S Magic</h1> */}
-        
-            <div className="row">
-                <div className="col offset-1">
-                    <h1 className='fs-5 mb-4'>Company</h1>
-                    <p>About Us</p>
-                    <p>Mom's magic Corporate</p>
-                    <p>Careers</p>
-                    <p>Team</p>
-                    <p>Mom's magic One</p>
-                    <p>Mom's magic Instamart</p>
-                    <p>Mom's magic Dineout</p>
-                    <p>Mom's magic Genie</p>
-                    <p>Minis</p>
+        <footer style={{ backgroundColor: "#3a3a3e", color: "white", padding: "20px 0" }}>
+            <div className='mt-4' style={{ textAlign: "center", marginBottom: "20px" }}>
+                <h6 className='mb-4'>Subscribe to our newsletter</h6>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <input type="email" placeholder="Input your email" style={{ padding: "7px", width: "250px", border: "1px solid #ccc", borderRadius:"1rem 0 0 1rem" }} />
+                    <button style={{ backgroundColor: "#6366f1", color: "white", padding: "8px 15px", border: "none", cursor: "pointer", borderRadius:"0 1rem 1rem 0" }}>Subscribe</button>
                 </div>
-
-                <div className="col ">
-                    <h1 className='fs-5 mb-4'>Contact us</h1>
-                    <p>Help & Support</p>
-                    <p>Partner with us</p>
-                    <p>Ride with us</p>
-                    <h1 className='fs-5 mt-4 mb-4'>Legal</h1>
-                    <p>Terms & Conditions</p>
-                    <p>Cookie Policy</p>
-                    <p>Privacy Policy</p>
+            </div>
+        <div className='footer-container'>
+            <div className="row mt-4">
+                <div className="row row-cols-md-2 row-cols-lg-2 row-cols-sm-1">
+                    <h5 className='col'><span role="img" aria-label="chat">💬</span> Service Scout</h5>
+                    <div className='col'>
+                        <a className='footer-items' href="#" >Pricing</a>
+                        <a className='footer-items' href="#" >About us</a>
+                        <a className='footer-items' href="#" >Features</a>
+                        <a className='footer-items' href="#" >Help Center</a>
+                        <a className='footer-items' href="#" >Contact us</a>
+                        <a className='footer-items' href="#" >FAQs</a>
+                        <a className='footer-items' href="#" style={{ color: "white" }}>Careers</a>
+                    </div>
                 </div>
-
-                <div className="col">
-                    <h1 className='fs-5 mb-4'>Avaiable in:</h1>
-                    <p>Vadodara</p>
-                    <p>Surat</p>
-                </div>
-                <div className="col  d-lg-block d-sm-block d-md-block d-none">
-                    <h1 className='fs-5 mb-4'>Life at Mom's magic</h1>
-                    <p>Explore with Mom's magic</p>
-                    <p>Mom's magic News</p>
-                    <p>Snackables</p>
-                    <h1 className='fs-5 mt-5 mb-4'>Social Links</h1>
-                    <div className='row '>
-                        <i class="fa-brands fa-linkedin col-2"></i>
-                        <i class="fa-brands fa-instagram col-2"></i>
-                        <i class="fa-brands fa-facebook-f col-2"></i>
-                        <i class="fa-brands fa-twitter col-2"></i>
+                <hr className='my-2'/>
+                <div className='row row-cols-1 row-cols-md-3 row-cols-lg-3 row-cols-sm-3'>
+                    <div className="col text-center text-sm-start text-md-start text-lg-start" style={{ marginBottom: "20px" }}>
+                        <select style={{ padding: "5px", borderRadius: "5px" }}>
+                            <option>English</option>
+                            <option>Spanish</option>
+                        </select>
+                    </div>
+                    <div className="col" style={{ textAlign: "center", marginBottom: "10px" }}>
+                        <p>&copy; 2024 Brand, Inc. • <a href="#" style={{ color: "white" }}>Privacy</a> • <a href="#" style={{ color: "white" }}>Terms</a> • <a href="#" style={{ color: "white" }}>Sitemap</a></p>
+                    </div>
+                    <div className='col text-center text-sm-end text-md-end text-lg-end'>
+                        <Twitter style={{ marginRight: "10px", color:"lightblue" }} />
+                        <Facebook style={{ marginRight: "10px", color: "blue" }} />
+                        <LinkedIn style={{ marginRight: "10px", color: "blueviolet" }} />
+                        <YouTube style={{ color: "red"}}/>
                     </div>
                 </div>
             </div>
-            <hr className='mx-4'/>
-            <div className="row text-center">
-                <p className='text-center'>
-                &copy; 2010 - 2024, Not MOM'S Magic Ltd. All rights reserved.
-                </p>
-            </div>
         </div>
+      </footer>
      );
 }
 
