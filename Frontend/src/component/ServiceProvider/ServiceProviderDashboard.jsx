@@ -10,6 +10,7 @@ import ServiceMenu from './ServiceMenu';
 import { showToast } from '../../utils/showToast'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import DailyChart from './DailyChart';
 
 const ServiceProviderDashboard = () => {
   const location = useLocation();
@@ -79,6 +80,7 @@ const ServiceProviderDashboard = () => {
       {/* Main Content */}
       <main className="dashboard-main">
         <div className="container">
+          <DailyChart/>
           {/* Ratings & Reviews Section */}
           <ServiceRating/>
           {/* Subscriptions Section */}

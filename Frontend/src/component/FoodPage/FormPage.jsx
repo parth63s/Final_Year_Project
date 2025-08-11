@@ -23,7 +23,8 @@ function FormPage() {
     }
 
     const options = {
-      key: "rzp_test_T7U7gGUDl7RQ8c", // Replace with your Razorpay key
+      key: "rzp_test_rSKVL06FYvvxA5", // Replace with your Razorpay key
+      secret: "Ie5mQB0QNwbFasOJAEWomrtz",
       amount: totalPrice * 100,
       currency: "INR",
       name: "Tiffin Service",

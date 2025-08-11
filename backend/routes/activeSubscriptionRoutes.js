@@ -62,4 +62,78 @@ router.get("/active-summary", async (req, res) => {
   }
 });
 
+
+router.get("/daily-summary", async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const dailyData = await Subscription.aggregate([
+      {
+        $lookup: {
+          from: "plans",
+          localField: "plan",
+          foreignField: "_id",
+          as: "planData",
+        },
+      },
+      { $unwind: "$planData" },
+      { $match: { "planData.user": userId } },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+      {
+        $project: {
+          date: "$_id",
+          count: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    const profitData = await Subscription.aggregate([
+      {
+        $lookup: {
+          from: "plans",
+          localField: "plan",
+          foreignField: "_id",
+          as: "planData",
+        },
+      },
+      { $unwind: "$planData" },
+      { $match: { "planData.user": userId } },
+      {
+        $group: {
+          _id: null,
+          totalProfit: {
+            $sum: {
+              $subtract: ["$totalPrice", { $multiply: ["$members", 15] }]
+            }
+          },
+          totalMembers: { $sum: "$members" },
+          totalSubscriptions: { $sum: 1 }
+        },
+      }
+    ]);
+
+    const summary = {
+      dailyData,
+      totalProfit: profitData[0]?.totalProfit || 0,
+      totalMembers: profitData[0]?.totalMembers || 0,
+      totalSubscriptions: profitData[0]?.totalSubscriptions || 0,
+    };
+
+    res.json(summary);
+  } catch (err) {
+    console.error("Daily summary error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 module.exports = router;
