@@ -58,6 +58,11 @@ const subscriptionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  delivery: {
+    type:mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Subscription", subscriptionSchema);

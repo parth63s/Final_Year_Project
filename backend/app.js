@@ -13,6 +13,7 @@ const food = require("./models/Food");
 const MongoStore = require('connect-mongo');
 const subscriptionRoutes = require("./routes/SubscriptionRoutes");
 const activeSubscriptionRoutes = require("./routes/activeSubscriptionRoutes");
+const deliveryRoutes = require("./routes/deliveryRoutes");
 
 dotenv.config();
 const app = express();
@@ -44,10 +45,12 @@ app.use(passport.session());
 
 // app.use('/api/auth', require('./routes/auth'));
 app.use('/api/auth', authRoutes);
-app.use("/api/foods", foodRoutes);
+app.use("/api/foods", foodRoutes); 
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/plans', planRoutes);
 app.use('/api/:planId', subscriptionRoutes);
 app.use('/api/subscriptions', activeSubscriptionRoutes);
+app.use("/api/delivery", deliveryRoutes);
+
 
 app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));

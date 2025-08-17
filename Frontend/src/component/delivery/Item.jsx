@@ -1,190 +1,216 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
-import { OnlineStatusContext } from './OnlineStatusContext';
+import { OnlineStatusContext } from "./OnlineStatusContext";
+import axios from "axios";
+
+import { toast } from "react-toastify";
+
+
+const getPickupTime = (slot) => {
+  if (!slot) return "";
+  const [startTime] = slot.split(" - ");
+  const date = new Date(`1970-01-01 ${startTime}`);
+  date.setMinutes(date.getMinutes() - 30);
+  return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) + " - " + startTime;
+};
+
+const isWithinDeliveryWindow = (slot) => {
+  if (!slot) return false;
+  const [startTime, endTime] = slot.split(" - ");
+  const now = new Date();
+  const today = now.toDateString();
+  const startDate = new Date(`${today} ${startTime}`);
+  const endDate = new Date(`${today} ${endTime}`);
+  return now >= startDate && now <= endDate;
+};
 
 const Item = () => {
-  const { isOnline, toggleOnline } = useContext(OnlineStatusContext);
-  const [plans, setPlans] = useState([
-    {
-      id: 1,
-      customer: {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone: "+1 234-567-8900",
-        address: "123 Main Street, Apt 4B, New York, NY 10001",
-      },
-      pickup: {
-        restaurant: "Healthy Delights",
-        address: "456 Restaurant Ave, New York, NY 10002",
-        startTime: "10:00 AM",
-        endTime: "10:30 AM",
-      },
-      delivery: {
-        time: "11:00 AM",
-        status: "pending",
-      },
-      subscription: {
-        type: "Monthly Premium",
-        days: ["Monday", "Wednesday", "Friday"],
-      },
-      mapUrl: "https://maps.google.com/?q=40.7128,-74.0060",
-    },
-    {
-      id: 2,
-      customer: {
-        name: "Jane Smith",
-        email: "jane.smith@example.com",
-        phone: "+1 234-567-8901",
-        address: "789 Park Avenue, New York, NY 10003",
-      },
-      pickup: {
-        restaurant: "Fresh Foods",
-        address: "321 Food Street, New York, NY 10004",
-        startTime: "11:30 AM",
-        endTime: "12:00 PM",
-      },
-      delivery: {
-        time: "12:30 PM",
-        status: "in_progress",
-      },
-      subscription: {
-        type: "Weekly Standard",
-        days: ["Tuesday", "Thursday"],
-      },
-      mapUrl: "https://maps.google.com/?q=40.7128,-74.0060",
-    },
-  ]);
+  const { isOnline } = useContext(OnlineStatusContext);
+  const [deliveries, setDeliveries] = useState([]);
 
-  const updateDeliveryStatus = (id) => {
-    setPlans((prevPlans) =>
-      prevPlans.map((plan) =>
-        plan.id === id
-          ? {
-              ...plan,
-              delivery: {
-                ...plan.delivery,
-                status:
-                  plan.delivery.status === "pending"
-                    ? "in_progress"
-                    : "completed",
-              },
-            }
-          : plan
-      )
-    );
-  };
+  // Fetch today's deliveries from backend
+  useEffect(() => {
+       const fetchData = async () => {
+        try {
+          // await axios.post("http://localhost:5000/api/delivery/create-today-for-all");
+          const res = await axios.get("http://localhost:5000/api/delivery/today", {
+            withCredentials: true
+          });
+          setDeliveries(res.data);
+        } catch (err) {
+          console.error("Error fetching deliveries:", err.response?.data || err.message);
+        }
+      };
+      
+      fetchData();
+    }, []);
+    console.log(deliveries);
+
+  const updateDeliveryStatus = async (deliveryId, action) => {
+        try {
+          const res = await axios.put(
+            `http://localhost:5000/api/delivery/${action}/${deliveryId}`,
+            {},
+            { withCredentials: true }
+          );
+
+          // update in frontend state
+          setDeliveries((prev) =>
+            prev.map((delivery) =>
+              delivery._id === deliveryId ? { ...delivery, status: res.data.delivery.status } : delivery
+            )
+          );
+
+           toast.success(res.data.message, {
+              position: "top-right",
+              autoClose: 2000, // 2 seconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+        } catch (err) {
+          toast.error(err.response?.data?.message || "Error updating delivery", {
+            position: "top-right",
+            autoClose: 2000,
+            
+          });
+
+        }
+      };
 
   return (
     <div className="container delivery-margin mt-4">
-      {plans.map((plan) => (
-        <div key={plan.id} className="card mb-3 p-3 shadow">
-          {/* <div className="card-body"> */}
-            <div className="row">
-              {/* Customer Details */}
-              <div className="col-md-4">
-                <h5 className="mb-3">Customer Details</h5>
-                <p className="d-flex delivery-margin-icon">
-                    <p className="p-3 delivery-icon"><PersonIcon /></p>
+      {deliveries.map((delivery) => (
+        <div key={delivery._id} className="card mb-3 p-3 shadow">
+          <div className="row">
+            {/* Customer Details */}
+            <div className="col-md-4">
+              <h5 className="mb-3">Customer Details</h5>
+              <p className="d-flex delivery-margin-icon">
+                <p className="p-3 delivery-icon"><PersonIcon /></p>
+                <div className="m-2 text">
+                  {delivery.subscriptionId.user.name} <br />
+                  <small>Customer Name</small>
+                </div>
+              </p>
+              <p className="d-flex delivery-margin-icon">
+                <p className="p-3 delivery-icon"><PhoneIcon /></p>
+                <div className="m-2 text">
+                  {delivery.subscriptionId.user.phone} <br />
+                  <small>Phone</small>
+                </div>
+              </p>
+              <p className="d-flex delivery-margin-icon">
+                <p className="p-3 delivery-icon"><EmailIcon /></p>
+                <div className="m-2 text">
+                  {delivery.subscriptionId.user.email} <br />
+                  <small>Email</small>
+                </div>
+              </p>
+              <p className="d-flex delivery-margin-icon">
+                <p className="p-3 delivery-icon"><LocationOnIcon /></p>
+                <div className="m-2 text">
+                  {delivery.subscriptionId.user.address} <br />
+                  <small>Delivery Address</small>
+                </div>
+              </p>
+            </div>
+
+            {/* Delivery Schedule */}
+            <div className="col-md-4">
+              <h5 className="mb-3">Delivery Schedule</h5>
+              <p className="d-flex delivery-margin-icon">
+                    <p className="p-3 delivery-icon"><LocationOnIcon /></p>
                     <div className="m-2 text">
-                      {plan.customer.name} <br />
-                      <small>Customer Name</small>
+                      {delivery.subscriptionId.plan.name} <br />
+                      <small>{delivery.subscriptionId.user.address}</small>
                     </div>
                 </p>
+
                 <p className="d-flex delivery-margin-icon">
                     <p className="p-3 delivery-icon"><PhoneIcon /></p>
                     <div className="m-2 text">
-                      {plan.customer.phone} <br />
+                      {delivery.subscriptionId.plan.user.phone} <br />
                       <small>Phone Name</small>
                     </div>
                 </p>
-                
-                <p className="d-flex delivery-margin-icon">
-                    <p className="p-3 delivery-icon"><EmailIcon /></p>
-                    <div className="m-2 text">
-                      {plan.customer.email} <br />
-                      <small>Email</small>
-                    </div>
-                </p>
-                <p className="d-flex delivery-margin-icon">
-                    <p className="p-3 delivery-icon"><LocationOnIcon /></p>
-                    <div className="m-2 text">
-                      {plan.customer.address} <br />
-                      <small>Delivery Address</small>
-                    </div>
-                </p>
-              </div>
+              <p className="d-flex delivery-margin-icon">
+                <p className="p-3 delivery-icon"><AccessTimeIcon /></p>
+                <div className="m-2 text">
+                  Pickup: {getPickupTime(delivery.slotTime)}<br />
+                  <small>Delivery: {delivery.slotTime}</small>
+                </div>
+              </p>
+              <p className="d-flex delivery-margin-icon">
+                <p className="p-3 delivery-icon"><DeliveryDiningIcon /></p>
+                <div className="m-2 text">
+                    {delivery.subscriptionId.slotType}  {
+                      delivery.subscriptionId.plan.duration === 3
+                        ? "Trial Premium"
+                        : delivery.subscriptionId.plan.duration === 7
+                        ? "Weekly Premium"
+                        : delivery.subscriptionId.plan.duration === 30
+                        ? "Monthly Premium"
+                        : ""
+                    }
 
-              {/* Delivery Schedule */}
-              <div className="col-md-4">
-                <h5 className="mb-3">Delivery Schedule</h5>
-                <p className="d-flex delivery-margin-icon">
-                    <p className="p-3 delivery-icon"><LocationOnIcon /></p>
-                    <div className="m-2 text">
-                      {plan.pickup.restaurant} <br />
-                      <small>{plan.pickup.address}</small>
-                    </div>
-                </p>
+                  <br />
+                    <small>
+                      {new Date(delivery.subscriptionId.startDate).toLocaleDateString()} - {new Date(delivery.subscriptionId.endDate).toLocaleDateString()}
+                    </small>
+                </div>
+              </p>
+            </div>
+            
 
-                <p className="d-flex delivery-margin-icon">
-                    <p className="p-3 delivery-icon"><AccessTimeIcon /></p>
-                    <div className="m-2 text">
-                      Pickup: {plan.pickup.startTime} -{" "}
-                      {plan.pickup.endTime} <br />
-                      <small>Delivery: {plan.delivery.time}</small>
-                    </div>
-                </p>
 
-                
-                <p className="d-flex delivery-margin-icon">
-                    <p className="p-3 delivery-icon"><DeliveryDiningIcon /></p>
-                    <div className="m-2 text">
-                      {plan.subscription.type} <br />
-                      <small>Days: {plan.subscription.days.join(", ")}</small>
-                    </div>
-                </p>
-                
-              </div>
 
-              {/* Map & Actions */}
-              <div className="col-md-4 text-center">
-                <h5>Route & Actions</h5>
-                <iframe
-                  src={plan.mapUrl}
-                  width="100%"
-                  height="200"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  title={`Map-${plan.id}`}
-                ></iframe>
-                <div className="row mt-3 p-3">
-                  <button
-                    className={`btn  btn-primary delivery-btn ${!isOnline || plan.delivery.status === "completed" ? "btn-secondary" : ""} col m-1 shadow`}
-                    disabled={!isOnline || plan.delivery.status === "completed"}
-                    onClick={() => updateDeliveryStatus(plan.id)}
+            {/* Map & Actions */}
+            <div className="col-md-4 text-center">
+              <h5>Route & Actions</h5>
+              <iframe
+                src={delivery.mapUrl}
+                width="100%"
+                height="200"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                title={`Map-${delivery._id}`}
+              ></iframe>
+              <div className="row mt-3 p-3">
+                <button
+                    className={`btn btn-primary delivery-btn ${!isOnline || delivery.status === "delivered" ? "btn-secondary" : ""} col m-1 shadow`}
+                    disabled={!isOnline || delivery.status === "delivered" || !isWithinDeliveryWindow(delivery.slotTime)}
+                    onClick={() =>
+                      updateDeliveryStatus(delivery._id,
+                        delivery.status === "start_delivery" ? "start-delivery" : "mark-delivered"
+                      )
+                    }
                   >
-                    {plan.delivery.status === "pending"
+                    {delivery.status === "start_delivery"
                       ? "Start Delivery"
-                      : plan.delivery.status === "in_progress"
+                      : delivery.status === "pending"
                       ? "Mark Delivered"
                       : "Delivered"}
                   </button>
-                  <button
-                    className="btn btn-outline-danger col m-1"
-                    onClick={() => window.open(plan.mapUrl, "_blank")}
-                  >
-                    Open Map
-                  </button>
-                </div>
+
+                <button
+                  className="btn btn-outline-danger col m-1"
+                  onClick={() => window.open(delivery.mapUrl, "_blank")}
+                >
+                  Open Map
+                </button>
               </div>
             </div>
           </div>
-        // </div>
+        </div>
       ))}
     </div>
   );

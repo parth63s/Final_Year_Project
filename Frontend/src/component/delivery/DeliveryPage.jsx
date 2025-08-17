@@ -9,16 +9,19 @@ import { OnlineStatusProvider } from "./OnlineStatusContext";
 import { showToast } from '../../utils/showToast'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function DeliveryPage() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (location.state?.toast) {
       showToast(location.state.toast, "success");
+      navigate(location.pathname, { replace: true });
     }
-  }, [location.state]);
+  }, [location, navigate]);
 
   return ( 
     <div className='delivery-background'>
