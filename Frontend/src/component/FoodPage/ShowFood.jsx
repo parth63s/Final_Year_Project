@@ -3,7 +3,6 @@ import { Tooltip, tooltipClasses, styled } from "@mui/material";
 import { IoLocationOutline } from "react-icons/io5";
 import axios from 'axios';
 import Review from './Review';
-import Subscriptions from './Subscriptions';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { motion } from 'framer-motion';
@@ -56,7 +55,8 @@ function ShowFood() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="p-3"
           >
-            <h1 className='fw-bold display-6 fs-2'>{data.user.name}</h1>
+            <h1 className='fw-bold display-6 fs-2'>{data.user.kitchenName}</h1>
+            {/* <h5 className='fw-bold '>{data.user.name}</h5> */}
             <p className='fs-5 text-muted mb-1'>
               {data.reviews && data.reviews.length > 0
                     ? (data.reviews.reduce((sum, r) => sum + r.rating, 0) / data.reviews.length).toFixed(1)
@@ -128,40 +128,51 @@ function ShowFood() {
       </motion.div>
 
       {/* Menu Table */}
+      {/* Menu Section */}
+{/* Menu Section */}
       <motion.div
         className="card shadow-lg border-0 p-4 mb-4"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <h4 className="mb-3">Menu</h4>
-        <div style={{ maxHeight: "350px", overflowY: "auto" }}>
-          <table className="table table-bordered text-center">
-            <thead className="table-dark text-white">
-              <tr>
-                <th>Day</th>
-                <th>Date</th>
-                <th>Lunch</th>
-                <th>Dinner</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.menu?.map((day, index) => {
-                const uploadDate = moment(data.createdAt);
-                const menuDate = uploadDate.clone().add(index, 'days').format("ddd, DD MMM YYYY");
-                return (
-                  <tr key={index}>
-                    <td>Day {index + 1}</td>
-                    <td>{menuDate}</td>
-                    <td>{day.lunch || "N/A"}</td>
-                    <td>{day.dinner || "N/A"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <h4 className="mb-4 text-center">🍽️ Menu</h4>
+        <div className="row">
+          {/* Lunch */}
+          <div className="col-md-6">
+            <h6 className="text-center text-warning">🥗 Lunch</h6>
+            {data.menu?.[0]?.lunch && data.menu[0].lunch.length > 0 ? (
+              <ul className="menu-list list-group list-group-flush">
+                {data.menu[0].lunch.map((item, i) => (
+                  <li key={i} className="list-group-item text-center">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-muted text-center">No lunch items</p>
+            )}
+          </div>
+
+          {/* Dinner */}
+          <div className="col-md-6">
+            <h6 className="text-center text-primary">🍛 Dinner</h6>
+            {data.menu?.[0]?.dinner && data.menu[0].dinner.length > 0 ? (
+              <ul className="menu-list list-group list-group-flush">
+                {data.menu[0].dinner.map((item, i) => (
+                  <li key={i} className="list-group-item text-center">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-muted text-center">No dinner items</p>
+            )}
+          </div>
         </div>
       </motion.div>
+
+
 
       {/* Subscriptions & Reviews */}
       {/* <Subscriptions /> */}

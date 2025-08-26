@@ -2,8 +2,8 @@
 const mongoose = require("mongoose");
 
 const menuSchema = new mongoose.Schema({
-  lunch: String,
-  dinner: String,
+  lunch: [String],   // multiple lunch items allowed
+  dinner: [String],  // multiple dinner items allowed
 });
 
 const planSchema = new mongoose.Schema({
@@ -20,7 +20,6 @@ const planSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  
   mealsPerDay: {
     type: Number,
     required: true,
@@ -28,7 +27,7 @@ const planSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-  },  
+  },
   features: [String],
   support: {
     type: Boolean,
@@ -36,22 +35,23 @@ const planSchema = new mongoose.Schema({
   },
   imageUrls: {
     type: [String],
-    validate: [arrayLimit, 'Exactly 4 images are required'],
+    validate: [arrayLimit, "Exactly 4 images are required"],
     required: true,
   },
-  menu: [menuSchema],
-  // desrciption: String,
+  menu: [menuSchema],   // single menu object with arrays inside
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
-  subscriptions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Subscription",
-    required: true,
-  }],
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  subscriptions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subscription",
+      required: true,
+    },
+  ],
 }, {
   timestamps: true,
 });

@@ -17,8 +17,11 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "lucide-react": "^0.539.0",
     "mongoose": "^8.16.2",
+    "multer": "^2.0.2",
     "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.5",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "razorpay": "^2.9.6"

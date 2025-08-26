@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import NavBar from "../NavBar";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 
 const planDurations = {
   Trial: 3,
@@ -9,16 +12,24 @@ const planDurations = {
 };
 
 const AddPlanForm = ({ onSubmit }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "Trial",
     price: "",
     duration: planDurations["Trial"],
     mealsPerDay: "",
-    description: "", // ✅ Added
+    description: "",
     features: [],
     support: false,
-    menu: Array.from({ length: planDurations["Trial"] }, () => ({ lunch: "", dinner: "" })),
+    menu: { lunch: [], dinner: [] },  // ✅ instead of []
     imageUrls: ["", "", "", ""],
+  });
+
+
+  const [newMenuItem, setNewMenuItem] = useState({
+    type: "Lunch",
+    item: "",
   });
 
   const handleChange = (e) => {
@@ -30,7 +41,7 @@ const AddPlanForm = ({ onSubmit }) => {
         ...formData,
         name: value,
         duration: days,
-        menu: Array.from({ length: days }, () => ({ lunch: "", dinner: "" })),
+        menu: { lunch: [], dinner: [] }, // reset menu
       });
     } else if (type === "checkbox" && name === "features") {
       const feature = value;
@@ -45,12 +56,6 @@ const AddPlanForm = ({ onSubmit }) => {
     }
   };
 
-  const handleMenuChange = (index, type, value) => {
-    const newMenu = [...formData.menu];
-    newMenu[index][type] = value;
-    setFormData({ ...formData, menu: newMenu });
-  };
-
   const handleImageChange = (index, file) => {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -58,30 +63,60 @@ const AddPlanForm = ({ onSubmit }) => {
       updatedImages[index] = reader.result;
       setFormData({ ...formData, imageUrls: updatedImages });
     };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    if (file) reader.readAsDataURL(file);
   };
+
+  const addMenuItem = () => {
+      if (newMenuItem.item.trim() !== "") {
+        setFormData({
+          ...formData,
+          menu: {
+            ...formData.menu,
+            [newMenuItem.type.toLowerCase()]: [
+              ...formData.menu[newMenuItem.type.toLowerCase()],
+              newMenuItem.item
+            ]
+          }
+        });
+        setNewMenuItem({ type: newMenuItem.type, item: "" });
+      }
+    };
+
+
+  const removeMenuItem = (type, index) => {
+    const updated = formData.menu[type].filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      menu: {
+        ...formData.menu,
+        [type]: updated
+      }
+    });
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/plans/add", formData, { withCredentials: true });
-      alert("Plan saved successfully!");
+      await axios.post("http://localhost:5000/api/plans/add", formData, { withCredentials: true });
+      navigate("/service", { state: { message: "Plan saved successfully!" } });
+
+      // reset form
       setFormData({
         name: "Trial",
         price: "",
         duration: planDurations["Trial"],
         mealsPerDay: "",
-        description: "", // ✅ Reset description
+        description: "",
         features: [],
         support: false,
-        menu: Array.from({ length: planDurations["Trial"] }, () => ({ lunch: "", dinner: "" })),
+        menu: { lunch: [], dinner: [] },  // ✅ FIXED
         imageUrls: ["", "", "", ""],
       });
+      toast.success("Plan added successfully!");
+      navigate("/service");
     } catch (error) {
-      console.error(error);
-      alert("Failed to save plan.");
+      toast.error("Failed to added plan.");
     }
   };
 
@@ -169,7 +204,6 @@ const AddPlanForm = ({ onSubmit }) => {
               />
               <label className="form-check-label">Basic Menu</label>
             </div>
-
             <div className="form-check mb-2">
               <input
                 className="form-check-input"
@@ -178,10 +212,10 @@ const AddPlanForm = ({ onSubmit }) => {
                 name="features"
                 checked={formData.features.includes("Premium menu")}
                 onChange={handleChange}
+
               />
               <label className="form-check-label">Premium Menu</label>
             </div>
-
             <div className="form-check mb-3">
               <input
                 className="form-check-input"
@@ -193,7 +227,6 @@ const AddPlanForm = ({ onSubmit }) => {
               />
               <label className="form-check-label">Free Delivery</label>
             </div>
-
             <div className="form-check mb-3">
               <input
                 className="form-check-input"
@@ -228,34 +261,84 @@ const AddPlanForm = ({ onSubmit }) => {
               ))}
             </div>
 
-            <h5 className="mt-4 mb-3">Menu Per Day</h5>
-            {formData.menu.map((day, index) => (
-              <div key={index} className="border rounded p-3 mb-3">
-                <strong>Day {index + 1}</strong>
-                <div className="form-group mt-2">
-                  <label>Lunch</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={day.lunch}
-                    onChange={(e) => handleMenuChange(index, "lunch", e.target.value)}
-                    placeholder="Enter lunch menu"
-                  />
-                </div>
-                <div className="form-group mt-2">
-                  <label>Dinner</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={day.dinner}
-                    onChange={(e) => handleMenuChange(index, "dinner", e.target.value)}
-                    placeholder="Enter dinner menu"
-                  />
-                </div>
-              </div>
-            ))}
+            {/* ✅ Food Menu To-Do List */}
+            {/* ✅ Food Menu Section with Better UI */}
+            <h5 className="mt-4 mb-3">🍽️ Food Menu</h5>
 
-            <button className="btn btn-primary w-100 mt-3" type="submit">
+            <div className="card p-2 shadow-sm border-0 mb-3">
+              <div className="d-flex gap-2">
+                <select
+                  className="form-select w-25"
+                  value={newMenuItem.type}
+                  onChange={(e) => setNewMenuItem({ ...newMenuItem, type: e.target.value })}
+                >
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                </select>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter food item..."
+                  value={newMenuItem.item}
+                  onChange={(e) => setNewMenuItem({ ...newMenuItem, item: e.target.value })}
+
+                />
+                <button type="button" className="btn border  px-4" onClick={addMenuItem}>
+                  ➕ Add
+                </button>
+              </div>
+            </div>
+            {/* Food Items Display */}
+            <div className="row mt-3">
+              {/* Lunch Column */}
+              {/* Lunch */}
+              <div className="col-md-6">
+                <h6 className="text-center mb-3">🥗 Lunch</h6>
+                {formData.menu.lunch.length === 0 ? (
+                  <p className="text-muted text-center">No lunch items yet.</p>
+                ) : (
+                  formData.menu.lunch.map((item, idx) => (
+                    <div key={idx} className="card shadow-sm border-0 p-3 mb-2 d-flex flex-row justify-content-between">
+                      <span>{item}</span>
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => removeMenuItem("lunch", idx)}
+                      >
+                        ❌
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Dinner */}
+              <div className="col-md-6">
+                <h6 className="text-center mb-3">🍛 Dinner</h6>
+                {formData.menu.dinner.length === 0 ? (
+                  <p className="text-muted text-center">No dinner items yet.</p>
+                ) : (
+                  formData.menu.dinner.map((item, idx) => (
+                    <div key={idx} className="card shadow-sm border-0 p-3 mb-2 d-flex flex-row justify-content-between">
+                      <span>{item}</span>
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => removeMenuItem("dinner", idx)}
+                      >
+                        ❌
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+            </div>
+
+
+            
+        
+            <button className="btn btn-primary w-100 mt-4" type="submit" onClick={onSubmit}>
               Add Plan
             </button>
           </form>

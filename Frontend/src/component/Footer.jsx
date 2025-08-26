@@ -6,7 +6,7 @@ import "./footer.css";
 
 function Footer(value) {
     return ( 
-        <footer style={{ backgroundColor: "#3a3a3e", color: "white", padding: "20px 0" }}>
+        <footer style={{ backgroundColor: "#3a3a3e", color: "white", padding: "20px 0" }} className='mt-4'>
             <div className='mt-4' style={{ textAlign: "center", marginBottom: "20px" }}>
                 <h6 className='mb-4'>Subscribe to our newsletter</h6>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

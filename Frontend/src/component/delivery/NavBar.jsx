@@ -36,16 +36,14 @@ function NavBar() {
                     <div className="offcanvas-body">
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li className="nav-item">
-                                <Link className="nav-link active" to="/">Home</Link>
+                                <Link className="nav-link active" to="/profile">profile</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/food">Food Menu</Link>
-                            </li>
+                            
                             <li className="nav-item">
                                 <Link className="nav-link" to="/menu">Services</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/login">Login</Link>
+                                <Link className="nav-link" to="/logout">Logout</Link>
                             </li>
                         </ul>
                     </div>

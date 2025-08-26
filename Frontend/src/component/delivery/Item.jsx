@@ -26,6 +26,7 @@ const isWithinDeliveryWindow = (slot) => {
   const today = now.toDateString();
   const startDate = new Date(`${today} ${startTime}`);
   const endDate = new Date(`${today} ${endTime}`);
+  startDate.setMinutes(startDate.getMinutes() - 30);
   return now >= startDate && now <= endDate;
 };
 
@@ -129,7 +130,7 @@ const Item = () => {
               <p className="d-flex delivery-margin-icon">
                     <p className="p-3 delivery-icon"><LocationOnIcon /></p>
                     <div className="m-2 text">
-                      {delivery.subscriptionId.plan.name} <br />
+                      {delivery.subscriptionId.plan.user.kitchenName} <br />
                       <small>{delivery.subscriptionId.user.address}</small>
                     </div>
                 </p>

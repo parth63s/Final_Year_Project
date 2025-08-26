@@ -3,11 +3,15 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const multer = require("multer");
 
 // Register
-router.post('/register', async (req, res) => {
+const storage = multer.memoryStorage(); // keeps file in memory (you can also store on disk)
+const upload = multer({ storage });
+
+router.post('/register', upload.single('profilePicture'), async (req, res) => {
   console.log(req.body);
-  const { name, email, password, role, phone, address } = req.body;
+  const { name, email, password, role, phone, address, kitchenName } = req.body;
   const existing = await User.findOne({ email });
   if (existing) return res.status(400).json({ msg: 'User already exists' });
 

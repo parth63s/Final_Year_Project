@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const DeliverySchema = new mongoose.Schema({
   subscriptionId: { type: mongoose.Schema.Types.ObjectId, ref: "Subscription" },
   deliveryDate: { type: Date, required: true },
-  planId: { type: mongoose.Schema.Types.ObjectId, ref: "Plan" },
+  // planId: { type: mongoose.Schema.Types.ObjectId, ref: "Plan" },
   slotType: { type: String, enum: ["lunch", "dinner"], required: true },
   status: {
     type: String,

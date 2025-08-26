@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import { FaUser, FaCalendarAlt, FaUtensils } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 function FormPage() {
   const [members, setMembers] = useState(1);
   const [startDate, setStartDate] = useState("");
   const [lunchSlot, setLunchSlot] = useState("");
   const [dinnerSlot, setDinnerSlot] = useState("");
+  const [planPrice, setPlanPrice] = useState(0);
   const { id } = useParams(); // planId from URL
+  const navigate = useNavigate();
 
-  const totalPrice = 100 * members; // Simple pricing logic
+
+  // const { id } = useParams(); // planId from URL
+
+  useEffect(() => {
+    const fetchPlan = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:5000/api/plans/foodshow/${id}`);
+        setPlanPrice(data.price); // assuming your backend returns { price: 150, name: "Monthly Plan" }
+      } catch (err) {
+        toast.error("Error fetching plan details");
+      }
+    };
+    
+    fetchPlan();
+  }, [id]);
+
+
+ const totalPrice = planPrice * members; // Simple pricing logic
 
   const handlePayment = () => {
     if (!startDate || !members || !lunchSlot || !dinnerSlot) {
@@ -54,6 +72,7 @@ function FormPage() {
           if (result.data.subscription) {
             toast.success("Subscription created successfully!");
             // Optional: redirect to summary page
+            setTimeout(() => navigate(`/foodshow/${id}`), 2000); 
           } else {
             toast.error("Subscription failed: " + result.data.error);
           }
@@ -108,8 +127,10 @@ function FormPage() {
                 type="date"
                 className="form-control"
                 value={startDate}
+                min={new Date().toISOString().split("T")[0]} // ⬅️ prevents past dates
                 onChange={(e) => setStartDate(e.target.value)}
               />
+
             </div>
 
             <div className="mb-3">

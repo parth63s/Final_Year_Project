@@ -3,6 +3,7 @@ const router = express.Router();
 const Delivery = require("../models/delivery");
 const Subscription = require("../models/Subscription");
 const { startOfDay, endOfDay } = require("date-fns");
+const Plan = require("../models/Plan");
 // Create deliveries for ALL active subscriptions for today
 router.post("/create-today-for-all", async (req, res) => {
   try {
@@ -217,5 +218,64 @@ router.put("/start-delivery/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+// routes/delivery.js
+router.get("/user-deliveries", async (req, res) => {
+  try {
+    const userId = req.user._id; // Passport.js should add this
+
+    // 1. Find all subscriptions for this user
+    // console.log("Fetching deliveries for user:", userId);
+    const subscriptions = await Subscription.find({ user:userId });
+    // console.log("User subscriptions:", subscriptions);
+    const subscriptionIds = subscriptions.map((sub) => sub._id);
+
+    // 2. Find all deliveries linked to these subscriptions
+    const deliveries = await Delivery.find({ subscriptionId: { $in: subscriptionIds } })
+      .populate({
+        path: "subscriptionId",
+        populate: {
+          path: "plan",   // <-- planId inside subscription
+        }
+      });
+
+    res.json(deliveries);
+  } catch (err) {
+    console.error("Error fetching deliveries:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.get("/service-deliveries", async (req, res) => {
+  try {
+    const userId = req.user._id; // Passport.js adds this
+
+    // 1. Find all plans of this user and populate their subscriptions
+    const plans = await Plan.find({ user: userId })
+      // <-- assuming Plan schema has subscriptions: [ObjectId]
+
+    // 2. Collect all subscriptionIds from these plans
+    // const Deliveries = {};
+    const delivery = [];
+    for (const plan of plans) {
+      for(const sub of plan.subscriptions) {
+        const deliveries = await Delivery.find({ subscriptionId: sub._id }).populate({
+          path: "subscriptionId",
+          populate: { path: "plan" } // subscription → plan
+        });
+        delivery.push(...deliveries);
+      }
+    }
+    console.log("Collected delivery IDs:", delivery);
+
+    // 3. Find all deliveries linked to these subscriptionIds
+    res.json(delivery);
+
+  } catch (err) {
+    console.error("Error fetching service deliveries:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 
 module.exports = router;

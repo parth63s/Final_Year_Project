@@ -26,7 +26,7 @@ function ActiveSub() {
                 <h5 className="card-title">{plan.name}</h5>
                 <div className="subscription-count">{plan.count}</div>
                 <div className="subscription-price">
-                  ₹{plan.averagePrice.toFixed(2)} per day
+                  ₹{plan.averagePrice.toFixed(2)} 
                 </div>
               </div>
             </div>

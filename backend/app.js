@@ -14,7 +14,8 @@ const MongoStore = require('connect-mongo');
 const subscriptionRoutes = require("./routes/SubscriptionRoutes");
 const activeSubscriptionRoutes = require("./routes/activeSubscriptionRoutes");
 const deliveryRoutes = require("./routes/deliveryRoutes");
-
+const userRoutes = require("./routes/UserRoutes");
+const showSubscriptionRoutes = require("./routes/showSubscriptionRoutes");
 dotenv.config();
 const app = express();
 
@@ -51,6 +52,8 @@ app.use('/api/plans', planRoutes);
 app.use('/api/:planId', subscriptionRoutes);
 app.use('/api/subscriptions', activeSubscriptionRoutes);
 app.use("/api/delivery", deliveryRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/showSubscription", showSubscriptionRoutes);
 
 
 app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));

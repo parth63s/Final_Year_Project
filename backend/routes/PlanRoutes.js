@@ -34,5 +34,27 @@ router.get("/user", isAuthenticated, async (req, res) => {
   }
 });
 
+// Example Express route
+router.delete("/:id", async (req, res) => {
+  try {
+    await Plan.findByIdAndDelete(req.params.id);
+    res.json({ message: "Plan deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete plan" });
+  }
+});
+
+
+router.get("/foodshow/:id", async (req, res) => {
+  try {
+    const plan = await Plan.findById(req.params.id).populate("user");
+    if (!plan) return res.status(404).json({ error: "Plan not found" });
+    res.json(plan);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 module.exports = router;

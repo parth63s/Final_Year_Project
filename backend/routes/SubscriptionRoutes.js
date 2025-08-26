@@ -43,6 +43,7 @@ router.post("/subscribe", isAuthenticated, async (req, res) => {
       totalPrice,
       razorpayPaymentId,
       paymentStatus: "paid",
+      delivery:"68ad6b143df0d426341b33cb",
     });
 
     await subscription.save();
